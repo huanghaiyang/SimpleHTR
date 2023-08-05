@@ -11,13 +11,15 @@ from dataloader_iam import Batch
 tf.compat.v1.disable_eager_execution()
 
 
+# 解码器类型
 class DecoderType:
     """CTC decoder types."""
-    BestPath = 0
-    BeamSearch = 1
-    WordBeamSearch = 2
+    BestPath = 0 # 最佳路径解码器
+    BeamSearch = 1 # 波束搜索解码器
+    WordBeamSearch = 2 # 单词波束搜索解码器
 
 
+# 识别模型
 class Model:
     """Minimalistic TF model for HTR."""
 
@@ -27,13 +29,17 @@ class Model:
                  must_restore: bool = False,
                  dump: bool = False) -> None:
         """Init model: add CNN, RNN and CTC and initialize TF."""
-        self.dump = dump
-        self.char_list = char_list
-        self.decoder_type = decoder_type
-        self.must_restore = must_restore
-        self.snap_ID = 0
+        self.dump = dump # 是否将NN输出转储到CSV文件中
+        self.char_list = char_list # 字符列表
+        self.decoder_type = decoder_type # 解码器类型
+        self.must_restore = must_restore # 是否从磁盘中恢复模型
+        self.snap_ID = 0 # 快照ID
 
         # Whether to use normalization over a batch or a population
+        # 为了防止过拟合，我们需要对每一层的输入进行归一化处理，可以使用批量归一化（Batch Normalization）或者是层归一化（Layer Normalization）。
+        # 或者是使用权重归一化（Weight Normalization）。或者是使用实例归一化（Instance Normalization）。
+        # 或者是使用组归一化（Group Normalization）。 或者是使用自适应归一化（Adaptive Normalization）。等等。
+        # Normalization概念可以参考：https://zhuanlan.zhihu.com/p/33173246
         self.is_train = tf.compat.v1.placeholder(tf.bool, name='is_train')
 
         # input image batch

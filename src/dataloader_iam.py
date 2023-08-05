@@ -81,6 +81,7 @@ class DataLoaderIAM:
         # list of all chars in dataset
         self.char_list = sorted(list(chars))
 
+  # 切换到随机选择的训练集子集
     def train_set(self) -> None:
         """Switch to randomly chosen subset of training set."""
         self.data_augmentation = True
